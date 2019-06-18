@@ -5,6 +5,11 @@ use App\Models\UserModel;
 use Config\Database;
 
 class User extends \CodeIgniter\Controller {
+    protected $helpers = [];
+
+    public function __construct(){
+        $this->helpers = array_merge($this->helpers,['url','form']);
+    }
 
     public function index(){
         return view('regis');
@@ -23,6 +28,7 @@ class User extends \CodeIgniter\Controller {
             $password       = sha1($salt1 . $pswd);
             $dateofbirth    = htmlspecialchars($this->request->getPost('dateofbirth'));
             $address        = htmlspecialchars($this->request->getPost('address'));
+            $level          = htmlspecialchars($this->request->getPost('level'));
             $status         = "N";
             //CHECK Data before save , denied if email has register
             $cek            = $model->cekEmail($email);
@@ -82,13 +88,18 @@ class User extends \CodeIgniter\Controller {
             if ($pwd == $data['getPw']) {
                $sendSession = $model->set_login($email,$level);
                if ($session->get('level') == '2') {
-                   echo 'bisa pindah halaman';
+                   return redirect()->to(site_url('public/Home'));
                }
             }
         } else {
             $output = array('status' => "Email Failed", );
             echo json_encode($output);
         }
+    }
+    public function logout(){
+        $session = \Config\Services::session();
+        $session->start();
+        $session->remove($userdata);
     }
 }
 ;?>

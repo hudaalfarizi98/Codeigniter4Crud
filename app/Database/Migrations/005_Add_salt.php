@@ -14,8 +14,8 @@ class Migration_Add_salt extends Migration
 								'auto_increment'=> TRUE
 			],
 			'email' 			=> [
-								'type'			=> 'TEXT',
-								'constraint'	=> 100,
+								'type'			=> 'VARCHAR',
+								'constraint'	=> '100',
 			],
 			'salt'				=> [
 								'type' 			=> 'TEXT',
